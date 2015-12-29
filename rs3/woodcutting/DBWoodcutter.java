@@ -204,7 +204,9 @@ public class DBWoodcutter extends PollingScript<ClientContext> implements
 			final GameObject obj = ctx.objects.select()
 					.id(getAssignmentTreeIds()).nearest().poll();
 			if (obj.valid()) {
+				System.out.println("Object 1 is valid");
 				if (obj.inViewport()) {
+					System.out.println("Object 1 is in Viewport");
 					if (ctx.players.local().animation() == 21191) {
 						if (bankLogs() == false) {
 							final int randomInt = Random.nextInt(5, 15);
@@ -240,7 +242,7 @@ public class DBWoodcutter extends PollingScript<ClientContext> implements
 								if (obj2.valid()) {
 									if (ctx.players.local().animation() == 21191) {
 										if (obj2.inViewport()) {
-										obj2.hover();
+											obj2.hover();
 										} else {
 											ctx.camera.turnTo(obj2);
 										}
@@ -249,6 +251,7 @@ public class DBWoodcutter extends PollingScript<ClientContext> implements
 							}
 						}
 					} else {
+						System.out.println("Chopping down object 1");
 							obj.interact(true, "Chop down",
 									getAssignmentTreeString());
 					}
@@ -257,6 +260,7 @@ public class DBWoodcutter extends PollingScript<ClientContext> implements
 					obj.hover();
 				}
 			} else {
+				System.out.println("Finding second object");
 				final GameObject obj2 = ctx.objects.select()
 						.name(getAssignmentTreeString()).nearest().poll();
 				if (obj2.valid()) {
@@ -329,10 +333,10 @@ public class DBWoodcutter extends PollingScript<ClientContext> implements
 				ctx.bank.close();
 			}
 			equipBetterAxe();
-			ctx.camera.angle('n');
-			if (ctx.backpack.select().count() <= getRandomInventInt()) {
+			if (ctx.backpack.select().count() < getRandomInventInt()) {
 				if (!atTreeArea()) {
 					final Tile pathToTreeArea;
+					ctx.camera.angle('n');
 					if (!getAssignmentString().equalsIgnoreCase("Willow")) {
 						pathToTreeArea = ctx.movement.findPath(
 								getAssignmentArea().getCentralTile()).next();
@@ -358,7 +362,7 @@ public class DBWoodcutter extends PollingScript<ClientContext> implements
 				}
 			} else {
 				Tile pathToBank = ctx.movement.findPath(
-						getAssignmentBankArea().getCentralTile()).next();
+						getAssignmentBankArea().getRandomTile()).next();
 				if (pathToBank != null && pathToBank.x() != -1) {
 					ctx.movement.step(pathToBank);
 				} else {
