@@ -205,7 +205,7 @@ public class DBWoodcutter extends PollingScript<ClientContext> implements
 					.id(getAssignmentTreeIds()).nearest().poll();
 			if (obj.valid()) {
 				if (obj.inViewport()) {
-					if (ctx.players.local().animation() == 21191) {
+					if (ctx.players.local().animation() != -1) {
 						if (bankLogs() == false) {
 							final int randomInt = Random.nextInt(5, 15);
 							if (ctx.backpack.select().count() > (getRandomInventInt() - randomInt)) {
